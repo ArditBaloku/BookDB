@@ -5,9 +5,18 @@ oracledb.outFormat = oracledb.OBJECT
 let db = {}
 
 const connectionProperties = {
-  user: process.env.ORACLE_USERNAME,
-  password: process.env.ORACLE_PASSWORD,
-  connectString: process.env.ORACLE_URI,
+  user: "Ardit",
+  password: "123456",
+  connectString: `(DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=localhost)
+      (PORT=1521)
+    )
+    (CONNECT_DATA=
+      (SID=fiekdb)
+    )
+  )`
 }
 
 db.getConnect = () => new Promise((resolve, reject) => {
@@ -21,14 +30,14 @@ db.getConnect = () => new Promise((resolve, reject) => {
 })
 
 db.doRelease = (connection) => {
-  connection.release((err) => {
-    if (err) {
-      console.error(err.message);
-    }
-  })
+  return connection.close((err) => {
+      if (err) {
+        console.error(err.message);
+      }
+    })
 }
 
-db.executeAsync = function(sql, bindParams, options, connection) {
+db.executeAsync = (sql, bindParams, connection) => {
   return new Promise((resolve, reject) => {
       connection.execute(sql, bindParams, (err, result) => {
           if (err) {
