@@ -1,8 +1,9 @@
 const express = require('express')
+require('dotenv').config()
 const expressHandlebars = require('express-handlebars')
 const app = express()
 const port = process.env.PORT || 3000
-const db = require('./db')
+const db = require('./config/db')
 
 app.engine('handlebars', expressHandlebars({
   defaultLayout: 'main',
@@ -16,26 +17,27 @@ app.engine('handlebars', expressHandlebars({
 app.set('view engine', 'handlebars')
 
 app.get('/', (req, res) => {
-  const sql = 'SELECT * FROM books'
-  db.getConnect()
-    .then((conn) => {
-      return db.executeAsync(sql, [], conn)
-        .then((result) => {
-          db.doRelease(conn)
-          return res.json({
-            status: 'OK',
-            result: result
-          })
-        })
-        .catch((err) => {
-          console.log(err)
-          db.doRelease(conn)
-        })
-    })
-    .catch((err) => {
-      console.log(err)
-      db.doRelease(conn)
-    })
+  // const sql = 'SELECT * FROM books'
+  // db.getConnect()
+  //   .then((conn) => {
+  //     return db.executeAsync(sql, [], conn)
+  //       .then((result) => {
+  //         res.json({
+  //           status: 'OK',
+  //           result: result
+  //         })
+  //         return db.doRelease(conn)
+  //       })
+  //       .catch((err) => {
+  //         console.log(err)
+  //         db.doRelease(conn)
+  //       })
+  //   })
+  //   .catch((err) => {
+  //     console.log(err)
+  //     db.doRelease(conn)
+  //   })
+  res.render('home')
 })
 
 app.use(express.static(__dirname + '/public'))

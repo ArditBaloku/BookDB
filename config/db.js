@@ -5,18 +5,9 @@ oracledb.outFormat = oracledb.OBJECT
 let db = {}
 
 const connectionProperties = {
-  user: "Ardit",
-  password: "123456",
-  connectString: `(DESCRIPTION=
-    (ADDRESS=
-      (PROTOCOL=TCP)
-      (HOST=localhost)
-      (PORT=1521)
-    )
-    (CONNECT_DATA=
-      (SID=fiekdb)
-    )
-  )`
+  user: process.env.ORACLE_USERNAME,
+  password: process.env.ORACLE_PASSWORD,
+  connectString: process.env.ORACLE_URI
 }
 
 db.getConnect = () => new Promise((resolve, reject) => {
