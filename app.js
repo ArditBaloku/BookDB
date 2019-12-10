@@ -1,9 +1,18 @@
 const express = require('express')
+const bodyParser = require('body-parser')
 require('dotenv').config()
 const expressHandlebars = require('express-handlebars')
 const app = express()
 const port = process.env.PORT || 3000
+const user = require('./controllers/userController')
+const userRouter = require('./routes/user')
 const db = require('./config/db')
+
+app.use(express.static(__dirname + '/public'))
+
+app.use(bodyParser.urlencoded({ extended: false }))
+
+app.use(bodyParser.json())
 
 app.engine('handlebars', expressHandlebars({
   defaultLayout: 'main',
@@ -15,6 +24,8 @@ app.engine('handlebars', expressHandlebars({
   }
 }}))
 app.set('view engine', 'handlebars')
+
+app.use('/user', userRouter)
 
 app.get('/', (req, res) => {
   // const sql = 'SELECT * FROM books'
@@ -39,7 +50,5 @@ app.get('/', (req, res) => {
   //   })
   res.render('home')
 })
-
-app.use(express.static(__dirname + '/public'))
 
 app.listen(port, () => console.log(`App listening on port ${port}!`))

@@ -1,0 +1,4 @@
+.basicForm {
+  display: flex;
+  flex-direction: column;
+}
