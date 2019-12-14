@@ -1,11 +1,31 @@
 {{#section 'head'}}
-<link rel="stylesheet" type="text/css" href="css/register.css" />
+<link rel="stylesheet" type="text/css" href="/css/register.css" />
 {{/section}}
-<h1>Register</h1>
+<h1 class="center">Register</h1>
 <form action='register' method='POST' class='basicForm'>
   <label for='email'>Email</label>
   <input type='text' name='email' id='email' />
   <label for='password'>Password</label>
   <input type='password' name='password' id='password' />
-  <input type='submit' />
+  <br />
+  <input type='submit' class="btn"/>
 </form>
+<br />
+<small
+  style="display: {{choose invalidErrDisplay 'none'}}; color: red"
+  class="center"
+>
+  Email or password is invalid. Password must be at least 8 characters.
+</small>
+<small
+  style="display: {{choose emailErrDisplay 'none'}}; color: red"
+  class="center"
+>
+  Email has already been used.
+</small>
+<small
+  style="display: {{choose successDisplay 'none'}}; color: green"
+  class="center"
+>
+  Account registered successfully.
+</small>
