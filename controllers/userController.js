@@ -1,5 +1,6 @@
 const User = require('../models/user')
 const Joi = require('joi')
+const bcrypt = require('bcryptjs')
 
 const registerSchema = Joi.object().keys({
   email: Joi.string().email(),
@@ -7,17 +8,26 @@ const registerSchema = Joi.object().keys({
 })
 
 exports.registerGet = (req, res) => {
-  res.render('register')
+  res.render('register', { invalidErrDisplay: "none", emailErrDisplay: "none" })
 }
 
-exports.registerPost = (req, res) => {
-  const {error, value} = Joi.validate({ email: req.body.email, password: req.body.password}, registerSchema)
+exports.registerPost = async (req, res) => {
+  const { email, password } = req.body
+  const { error } = Joi.validate({ email: email, password: password}, registerSchema)
 
-  console.log(error)
-  console.log(value)
-  // call model to see if email is in db
-  // call model to insert user
-  res.send('NOT IMPLEMENTED: Register')
+  if (error) {
+    return res.render('register', { invalidErrDisplay: 'block' })
+  }
+
+  const result = await User.getUser(email)
+
+  if (result.length) {
+    return res.render('register', { emailErrDisplay: 'block' })
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10)
+  await User.insertUser(email, hashedPassword)
+  return res.render('register', { successDisplay: 'block'})
 }
 
 exports.loginGet = (req, res) => {
