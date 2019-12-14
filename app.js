@@ -4,9 +4,7 @@ require('dotenv').config()
 const expressHandlebars = require('express-handlebars')
 const app = express()
 const port = process.env.PORT || 3000
-const user = require('./controllers/userController')
 const userRouter = require('./routes/user')
-const db = require('./config/db')
 
 app.use(express.static(__dirname + '/public'))
 
@@ -21,9 +19,12 @@ app.engine('handlebars', expressHandlebars({
       if(!this._sections) this._sections = {}
       this._sections[name] = options.fn(this)
       return null
-  }
+    },
+    choose: (a, b) => (a ? a : b)
 }}))
 app.set('view engine', 'handlebars')
+
+
 
 app.use('/user', userRouter)
 
