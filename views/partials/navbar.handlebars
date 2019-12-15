@@ -1,6 +1,9 @@
 <ul class='nav'>
   <li><a href="/">BookDB</a></li>
   {{#if user}}
-  <li style='float: right'><a href="/user/logout">Log out</a></li>
+  <li style='float: right'><a href="/user/logout">Log Out</a></li>
+  {{else}}
+  <li style='float: right'><a href="/user/login">Log In</a></li>
+  <li style='float: right'><a href="/user/register">Register</a></li>
   {{/if}}
 </ul>
