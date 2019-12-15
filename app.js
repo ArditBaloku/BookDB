@@ -1,16 +1,17 @@
-const express = require('express')
-const bodyParser = require('body-parser')
 require('dotenv').config()
-const expressHandlebars = require('express-handlebars')
+const express = require('express')
 const app = express()
-const port = process.env.PORT || 3000
+const bodyParser = require('body-parser')
+const expressSession = require('express-session')
+const expressHandlebars = require('express-handlebars')
 const userRouter = require('./routes/user')
+const indexRouter = require('./routes/index')
+const port = process.env.PORT || 3000
 
 app.use(express.static(__dirname + '/public'))
-
 app.use(bodyParser.urlencoded({ extended: false }))
-
 app.use(bodyParser.json())
+app.use(expressSession({secret: process.env.SESSIONSECRET, saveUninitialized: false, resave: false}))
 
 app.engine('handlebars', expressHandlebars({
   defaultLayout: 'main',
@@ -24,32 +25,8 @@ app.engine('handlebars', expressHandlebars({
 }}))
 app.set('view engine', 'handlebars')
 
-
-
 app.use('/user', userRouter)
 
-app.get('/', (req, res) => {
-  // const sql = 'SELECT * FROM books'
-  // db.getConnect()
-  //   .then((conn) => {
-  //     return db.executeAsync(sql, [], conn)
-  //       .then((result) => {
-  //         res.json({
-  //           status: 'OK',
-  //           result: result
-  //         })
-  //         return db.doRelease(conn)
-  //       })
-  //       .catch((err) => {
-  //         console.log(err)
-  //         db.doRelease(conn)
-  //       })
-  //   })
-  //   .catch((err) => {
-  //     console.log(err)
-  //     db.doRelease(conn)
-  //   })
-  res.render('home')
-})
+app.use('/', indexRouter)
 
 app.listen(port, () => console.log(`App listening on port ${port}!`))
