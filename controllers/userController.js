@@ -19,8 +19,9 @@ const registerPost = async (req, res) => {
     return res.redirect('/')
   }
 
-  const { email, password } = req.body
-  const { error } = Joi.validate({ email: email, password: password}, registerSchema)
+  const email = req.body.email.toLowerCase()
+  const password = req.body.password
+  const { error } = Joi.validate({ email, password }, registerSchema)
 
   if (error) {
     return res.render('register', { invalidErrDisplay: 'block' })
@@ -49,7 +50,14 @@ const loginPost = async (req, res) => {
     return res.redirect('/')
   }
 
-  const { email, password } = req.body
+  const email = req.body.email.toLowerCase()
+  const password = req.body.password
+  const { error } = Joi.validate({ email, password }, registerSchema)
+
+  if (error) {
+    return res.render('login', { invalidErrDisplay: 'block' })
+  }
+
   const user = await User.getUserByEmail(email)
 
   if (!user.length) {
