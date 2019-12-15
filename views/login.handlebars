@@ -1,0 +1,19 @@
+{{#section 'head'}}
+<link rel="stylesheet" type="text/css" href="/css/login.css" />
+{{/section}}
+<h1 class="center">Login</h1>
+<form action='login' method='POST' class='basicForm'>
+  <label for='email'>Email</label>
+  <input type='text' name='email' id='email' />
+  <label for='password'>Password</label>
+  <input type='password' name='password' id='password' />
+  <br />
+  <input type='submit' class="btn" title="Login"/>
+</form>
+<br />
+<small
+  style="display: {{choose invalidErrDisplay 'none'}}; color: red"
+  class="center"
+>
+  Email or password is invalid.
+</small>
