@@ -1,7 +1,7 @@
 const oracledb = require('oracledb')
 
 oracledb.autoCommit = true
-oracledb.outFormat = oracledb.OBJECT
+oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT
 let db = {}
 
 const connectionProperties = {
