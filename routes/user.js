@@ -1,13 +1,14 @@
 const express = require('express')
 const router = express.Router()
 const userController = require('../controllers/userController')
+const { loadUser } = require('../middlewares/loadUser')
 
 module.exports = router
 
-router.get('/register', userController.registerGet)
+router.get('/register', loadUser, userController.registerGet)
 
-router.post('/register', userController.registerPost)
+router.post('/register', loadUser, userController.registerPost)
 
-router.get('/login', userController.loginGet)
+router.get('/login', loadUser, userController.loginGet)
 
-router.post('/login', userController.loginPost)
+router.post('/login', loadUser, userController.loginPost)

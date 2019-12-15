@@ -7,11 +7,18 @@ const registerSchema = Joi.object().keys({
   password: Joi.string().regex(/^[a-zA-Z0-9!@.]{8,20}$/)
 })
 
-exports.registerGet = (req, res) => {
-  res.render('register', { invalidErrDisplay: "none", emailErrDisplay: "none" })
+const registerGet = (req, res) => {
+  if (req.session.user) {
+    return res.redirect('/')
+  }
+  return res.render('register')
 }
 
-exports.registerPost = async (req, res) => {
+const registerPost = async (req, res) => {
+  if (req.session.user) {
+    return res.redirect('/')
+  }
+
   const { email, password } = req.body
   const { error } = Joi.validate({ email: email, password: password}, registerSchema)
 
@@ -19,7 +26,7 @@ exports.registerPost = async (req, res) => {
     return res.render('register', { invalidErrDisplay: 'block' })
   }
 
-  const result = await User.getUser(email)
+  const result = await User.getUserByEmail(email)
 
   if (result.length) {
     return res.render('register', { emailErrDisplay: 'block' })
@@ -30,10 +37,38 @@ exports.registerPost = async (req, res) => {
   return res.render('register', { successDisplay: 'block'})
 }
 
-exports.loginGet = (req, res) => {
-  res.send('NOT IMPLEMENTED: Login')
+const loginGet = (req, res) => {
+  if (req.session.user) {
+    return res.redirect('/')
+  }
+  return res.render('login')
 }
 
-exports.loginPost = (req, res) => {
-  res.send('NOT IMPLEMENTED: Login')
+const loginPost = async (req, res) => {
+  if (req.session.user) {
+    return res.redirect('/')
+  }
+
+  const { email, password } = req.body
+  const user = await User.getUserByEmail(email)
+
+  if (!user.length) {
+    return res.render('login', { invalidErrDisplay: 'block' })
+  }
+
+  bcrypt.compare(password, user[0].PASSWORD, (err, success) => {
+    if (err) {
+      return res.render('login', { invalidErrDisplay: 'block' })
+    }
+
+    req.session.userId = user[0].USERID
+    return res.redirect('/')
+  })
+}
+
+module.exports = {
+  loginGet,
+  loginPost,
+  registerGet,
+  registerPost
 }
