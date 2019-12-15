@@ -13,7 +13,7 @@ const getUserById = async (id) => {
 }
 
 const insertUser = async (email, password) => {
-  const sql = `INSERT INTO USERS(USERNAME, PASSWORD) VALUES (:email, :password)`
+  const sql = `INSERT INTO USERS(USERNAME, PASSWORD, PRIVILEGE) VALUES (:email, :password, 'user')`
   const conn = await db.getConnect()
   return await db.executeAsync(sql, [email, password], conn)
 }
