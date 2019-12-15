@@ -3,7 +3,7 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const expressSession = require('express-session')
-const expressHandlebars = require('express-handlebars')
+const hbs = require('express-handlebars')
 const userRouter = require('./routes/user')
 const indexRouter = require('./routes/index')
 const port = process.env.PORT || 3000
@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(expressSession({secret: process.env.SESSIONSECRET, saveUninitialized: false, resave: false}))
 
-app.engine('handlebars', expressHandlebars({
+app.engine('handlebars', hbs({
   defaultLayout: 'main',
   helpers: {
     section: function(name, options) {
@@ -22,7 +22,8 @@ app.engine('handlebars', expressHandlebars({
       return null
     },
     choose: (a, b) => (a ? a : b)
-}}))
+  }
+}))
 app.set('view engine', 'handlebars')
 
 app.use('/user', userRouter)
