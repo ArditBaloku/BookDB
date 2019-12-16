@@ -8,7 +8,6 @@ const getBook = async (bookId) => {
 
 const getBooks = async (title) => {
   const lowerTitle = `%${title.toLowerCase()}%`
-  console.log(`lowertitle: ${lowerTitle}`)
   const sql = `SELECT * FROM BOOKS WHERE LOWER(TITLE) LIKE :lowerTitle`
   const conn = await db.getConnect()
   return await db.executeAsync(sql, [lowerTitle], conn)
