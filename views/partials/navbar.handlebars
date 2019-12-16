@@ -6,9 +6,14 @@
   </button>
     <div class="collapse navbar-collapse" id="navbarMenu"></div>
       <ul class="navbar-nav ml-auto">
+        {{#if user.isAdmin}}
+        <li class="nav-item">
+          <a href="/book/new" class="nav-link">Add Book</a>
+        </li>
+        {{/if}}
         <li class="nav-item">
           <a href="/user/logout" class="nav-link">Log Out</a>
-        </li>  
+        </li>
       </ul>
     </div>
   {{else}}
