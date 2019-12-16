@@ -1,12 +1,29 @@
-<ul class='nav'>
-  <li><a href="/">BookDB</a></li>
-  {{#if user.isAdmin}}
-  <li><a href="/book/new">Add book</a></li>
-  {{/if}}
+<nav class = "navbar navbar-expand-md navbar-dark bg-dark">
+  <a href="/" class="navbar-brand"><img src="/images/booklogo.jpg"></a>
   {{#if user}}
-  <li style='float: right'><a href="/user/logout">Log Out</a></li>
+  <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+    <div class="collapse navbar-collapse" id="navbarMenu"></div>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a href="/user/logout" class="nav-link">Log Out</a>
+        </li>  
+      </ul>
+    </div>
   {{else}}
-  <li style='float: right'><a href="/user/login">Log In</a></li>
-  <li style='float: right'><a href="/user/register">Register</a></li>
+  <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarMenu">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a href="/user/login" class="nav-link">Log In</a>
+      </li>
+      <li class="nav-item">
+        <a href="/user/register" class="nav-link">Register</a>
+      </li>
+    </ul>
+  </div>
   {{/if}}
-</ul>
+</nav>

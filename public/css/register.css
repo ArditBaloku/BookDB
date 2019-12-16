@@ -1,7 +1,6 @@
 .basicForm {
   display: flex;
   flex-direction: column;
-  width: 25%;
   margin: auto;
   line-height: 30px;
 }
