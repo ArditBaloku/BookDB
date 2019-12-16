@@ -18,6 +18,12 @@ const bookGet = async (req, res, next) => {
   res.json(book)
 }
 
+const booksGet = async (req, res) => {
+  const title = req.query.title
+  const books = await Book.getBooks(title)
+  res.json(books)
+}
+
 const newBookGet = (req, res) => {
   if (!req.session.user || !req.session.user.isAdmin) {
     return res.sendStatus(403)
@@ -54,6 +60,7 @@ const newBookPost = async (req, res) => {
 
 module.exports = {
   bookGet,
+  booksGet,
   newBookGet,
   newBookPost
 }
