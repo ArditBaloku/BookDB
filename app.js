@@ -33,4 +33,6 @@ app.use('/book', bookRouter)
 
 app.use('/', indexRouter)
 
+app.use((err, req, res, next) => res.render('404'))
+
 app.listen(port, () => console.log(`App listening on port ${port}!`))
