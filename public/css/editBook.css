@@ -1,0 +1,6 @@
+.basicForm {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  line-height: 30px;
+}
