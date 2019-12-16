@@ -4,21 +4,29 @@ const Joi = require('joi')
 const bookSchema = Joi.object().keys({
   title: Joi.string().required(),
   summary: Joi.string(),
-  isbn: Joi.string().regex(new RegExp(/^[0-9\-]$/)).required(),
+  isbn: Joi.string().regex(new RegExp(/^[0-9\-]+$/)).required(),
   authorName: Joi.string().required(),
   authorSurname: Joi.string().required()
 })
 
+const bookGet = async (req, res, next) => {
+  const bookId = req.params.bookId
+  const book = await Book.getBook(bookId)
+  if (!book.length) {
+    return next(new Error('Not found'))
+  }
+  res.json(book)
+}
+
 const newBookGet = (req, res) => {
-  if (!req.session.user.isAdmin) {
+  if (!req.session.user || !req.session.user.isAdmin) {
     return res.sendStatus(403)
   }
-
   res.render('editBook', { user: req.session.user })
 }
 
 const newBookPost = async (req, res) => {
-  if (!req.session.user.isAdmin) {
+  if (!req.session.user || !req.session.user.isAdmin) {
     return res.sendStatus(403)
   }
 
@@ -40,11 +48,12 @@ const newBookPost = async (req, res) => {
     })
   }
 
-  await User.insertBook(title, summary, isbn, authorName, authorSurname)
-  res.send('Success')
+  await Book.insertBook(title, summary, isbn, authorName, authorSurname)
+  return res.render('editBook', {user: req.session.user, successDisplay: 'block'})
 }
 
 module.exports = {
+  bookGet,
   newBookGet,
   newBookPost
 }

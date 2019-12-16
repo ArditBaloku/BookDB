@@ -1,9 +1,14 @@
 const db = require('../config/db')
 
+const getBook = async (bookId) => {
+  const sql = `SELECT * FROM BOOKS WHERE BOOKID=:bookId`
+  const conn = await db.getConnect()
+  return await db.executeAsync(sql, [bookId], conn)
+}
 
 const insertBook = async (title, summary, isbn, authorName, authorSurname) => {
   const sql = `INSERT INTO BOOKS(TITLE, SUMMARY, ISBN, AUTHOR) VALUES(
-    :title, :summary, ISBN(':isbn'), AUTHOR(':authorName', ':authorSurname')
+    :title, :summary, ISBN(:isbn), AUTHOR(:authorName, :authorSurname)
   )`
   const conn = await db.getConnect()
   return await db.executeAsync(sql, [title, summary, isbn, authorName, authorSurname], conn)
@@ -27,6 +32,7 @@ const deleteBook = async (bookId) => {
 }
 
 module.exports = {
+  getBook,
   insertBook,
   updateBook,
   deleteBook
