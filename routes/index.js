@@ -4,4 +4,6 @@ const { loadUser } = require('../middlewares/loadUser')
 
 module.exports = router
 
-router.get('/', loadUser, (req, res) => res.render('home', {user: req.session.userId}))
+router.get('/', loadUser, (req, res) => (
+  res.render('home', {user: req.session.user})
+  ))

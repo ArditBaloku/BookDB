@@ -4,8 +4,9 @@ const app = express()
 const bodyParser = require('body-parser')
 const expressSession = require('express-session')
 const hbs = require('express-handlebars')
-const userRouter = require('./routes/user')
 const indexRouter = require('./routes/index')
+const userRouter = require('./routes/user')
+const bookRouter = require('./routes/book')
 const port = process.env.PORT || 3000
 
 app.use(express.static(__dirname + '/public'))
@@ -27,6 +28,8 @@ app.engine('handlebars', hbs({
 app.set('view engine', 'handlebars')
 
 app.use('/user', userRouter)
+
+app.use('/book', bookRouter)
 
 app.use('/', indexRouter)
 

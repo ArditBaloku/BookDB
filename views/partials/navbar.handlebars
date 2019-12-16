@@ -1,5 +1,8 @@
 <ul class='nav'>
   <li><a href="/">BookDB</a></li>
+  {{#if user.isAdmin}}
+  <li><a href="/book/new">Add book</a></li>
+  {{/if}}
   {{#if user}}
   <li style='float: right'><a href="/user/logout">Log Out</a></li>
   {{else}}

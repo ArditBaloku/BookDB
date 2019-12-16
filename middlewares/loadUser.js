@@ -9,6 +9,7 @@ const loadUser = async (req, res, next) => {
 
   const user = await getUserById(id)
   req.session.user = user[0]
+  req.session.user.isAdmin = user[0].PRIVILEGE === 'admin'
   next()
 }
 
