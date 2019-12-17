@@ -15,7 +15,8 @@ const bookGet = async (req, res, next) => {
   if (!book.length) {
     return next(new Error('Not found'))
   }
-  res.json(book)
+  // res.render('book',{user : req.session.user , book})
+  res.json(book);
 }
 
 const booksGet = async (req, res) => {
