@@ -3,7 +3,21 @@ const db = require('../config/db')
 const getBook = async (bookId) => {
   const sql = `SELECT * FROM BOOKS WHERE BOOKID=:bookId`
   const conn = await db.getConnect()
-  return await db.executeAsync(sql, [bookId], conn)
+  const book = await db.executeAsync(sql, [bookId], conn)
+  const sql2 = `WITH t1(id, reqId) AS (
+    SELECT id, reqId
+    FROM PREREQUISITES
+    WHERE id = :bookId
+    UNION ALL
+    SELECT t2.id, t2.reqId
+    FROM PREREQUISITES t2, t1
+    WHERE t2.id = t1.reqId
+    )
+    SELECT BOOKS.title
+    FROM BOOKS, t1
+    WHERE t1.reqId = BOOKS.bookId`
+  book[0].PREQUELS = await db.executeAsync(sql2, [bookId], conn)
+  return book
 }
 
 const getBooks = async (title) => {
