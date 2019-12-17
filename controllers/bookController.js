@@ -21,7 +21,7 @@ const bookGet = async (req, res, next) => {
 const booksGet = async (req, res) => {
   const title = req.query.title
   const books = await Book.getBooks(title)
-  res.json(books)
+  res.render('books' ,{user : req.session.user , books})
 }
 
 const newBookGet = (req, res) => {
