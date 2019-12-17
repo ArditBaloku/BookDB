@@ -7,6 +7,7 @@ const hbs = require('express-handlebars')
 const indexRouter = require('./routes/index')
 const userRouter = require('./routes/user')
 const bookRouter = require('./routes/book')
+const commentRouter = require('./routes/comment')
 const port = process.env.PORT || 3000
 
 app.use(express.static(__dirname + '/public'))
@@ -30,6 +31,8 @@ app.set('view engine', 'handlebars')
 app.use('/user', userRouter)
 
 app.use('/book', bookRouter)
+
+app.use('/api/comment', commentRouter)
 
 app.use('/', indexRouter)
 
