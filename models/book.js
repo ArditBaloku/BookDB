@@ -13,7 +13,7 @@ const getBook = async (bookId) => {
     FROM PREREQUISITES t2, t1
     WHERE t2.id = t1.reqId
     )
-    SELECT BOOKS.title
+    SELECT BOOKS.title, BOOKS.bookId
     FROM BOOKS, t1
     WHERE t1.reqId = BOOKS.bookId`
   book[0].PREQUELS = await db.executeAsync(sql2, [bookId], conn)
@@ -37,13 +37,15 @@ const insertBook = async (title, summary, isbn, authorName, authorSurname) => {
 
 const updateBook = async (bookId, title, summary, isbn, authorName, authorSurname) => {
   const sql = `UPDATE BOOKS SET
-  TITLE=':title',
-  SUMMARY=':summary',
-  ISBN=ISBN(':isbn'),
-  AUTHOR=AUTHOR(':authorName',':authorSurname')
-  WHERE BOOKID=':bookId'`
+  TITLE=:title,
+  SUMMARY=:summary,
+  ISBN=ISBN(:isbn),
+  AUTHOR=AUTHOR(:authorName, :authorSurname)
+  WHERE BOOKID=:bookId`
+  const sql2 = `SELECT * FROM BOOKS WHERE BOOKID=:bookId`
   const conn = await db.getConnect()
-  return await db.executeAsync(sql, [bookId, title, summary, isbn, authorName, authorSurname], conn)
+  await db.executeAsync(sql, [title, summary, isbn, authorName, authorSurname, bookId], conn)
+  return db.executeAsync(sql2, [bookId], conn)
 }
 
 const deleteBook = async (bookId) => {
