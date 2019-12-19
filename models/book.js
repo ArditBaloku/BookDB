@@ -17,6 +17,11 @@ const getBook = async (bookId) => {
     FROM BOOKS, t1
     WHERE t1.reqId = BOOKS.bookId`
   book[0].PREQUELS = await db.executeAsync(sql2, [bookId], conn)
+  const sql3 = `SELECT U.USERNAME, R.CONTENT, R.REVIEWTIME, R.STARS
+  FROM USERS U, REVIEW R
+  WHERE R.BOOKID=:bookId AND U.USERID=R.USERID`
+  book[0].COMMENTS = await db.executeAsync(sql3, [bookId], conn)
+  console.log(book)
   return book
 }
 

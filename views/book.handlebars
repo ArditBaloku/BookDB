@@ -53,9 +53,32 @@
             </select>
             <input type="submit" value="Submit"  class="btn-primary rounded float-right"/>
             </form>
-            {{/if}}
             </div>
           </div>
+            {{/if}}
+          <!-- -->
+           {{#if book.COMMENTS}}
+           <h2>Comments</h2>
+            {{#each book.COMMENTS}}
+             <div class="bg-light p-5 rounded shadow mb-2">
+          <div class="card w-100">
+              <div class="card-header border-0 mb-4">
+                <div class="">
+                   <h1 class="card-text" style="font-size: 20px;">{{USERNAME}}</h1>
+              </div>
+              </div>
+             <div class="card-body">  
+                  <p class="">{{CONTENT}}</p>
+                  <p>Stars : {{STARS}}</p>
+                  <p>{{REVIEWTIME}}</p>
+             </div>
+          </div>
+        </div>
+                
+                  {{/each}}
+            {{/if}}
+
+          <!-- -->
       </div>
   </div>
 </div>
